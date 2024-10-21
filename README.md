@@ -1,6 +1,9 @@
 # OPA-WRAPPER STATE MANAGER
 
-This is a simple GO wrapper around OPA, that 
+This is a simple Go wrapper around OPA! 
+It allows saving the state of evaluated rules written in Rego.
+
+More precisely it saves the ***state** composite value of Rego, in the **datastore** server
 
 1 - Run the **datastore**:
 
