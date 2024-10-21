@@ -1,5 +1,7 @@
 # OPA-WRAPPER STATE MANAGER
 
+This is a simple GO wrapper around OPA, that 
+
 1 - Run the **datastore**:
 
 ```bash
