@@ -25,12 +25,20 @@ use a tool like Yaak (or simply CURL) to make request to the endpoint provided b
 
 Let's see how to use the **OPA-Wrapper State Manager** with the counter example...
 
-First, make a PUT request to the ***/data/counter*** API of datastore in order to save the initial value of the counter (this will be used as the initiali data.json)
+First, make a PUT request to the ***/data/counter*** API of datastore in order to save the initial value of the counter (this will be used as the initial data.json)
 
 ```bash
 curl -X PUT 'http://localhost:8081/data/counter' \
   --header 'Content-Type: application/json' \
   --data-raw $'5'
+```
+
+In alternative, you can create a data.json in the *datastore* dir and fill it out accordingly. For example:
+
+```json
+{
+   "counter": 5
+}
 ```
 
 Then we check that the request was successful
