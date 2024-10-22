@@ -11,6 +11,8 @@ import (
 	"github.com/open-policy-agent/opa/storage/inmem"
 )
 
+// TODO: abstract from the policy engine used to evaluate policies (REST calls???)
+
 /*
  * It uses OPA's Go library to evaluate queries...
  * Extract the new state and the real output of the evaluated query
