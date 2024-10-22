@@ -5,12 +5,14 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
-// TODO: rendere lo store persistente
+var filename = "data.json"
 
 func main() {
 	store := make(map[string]any)
+	loadFromFile(&store)
 
 	mux := http.NewServeMux()
 
@@ -18,6 +20,21 @@ func main() {
 	mux.HandleFunc("PUT /data/{key}", handleUpdate(store))
 
 	log.Fatal(http.ListenAndServe(":8081", mux))
+}
+
+func loadFromFile(store *map[string]any) error {
+	file, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(data, &store)
 }
 
 func handleData(store map[string]any) http.HandlerFunc {
@@ -48,6 +65,15 @@ func handleUpdate(store map[string]any) http.HandlerFunc {
 		}
 		store[key] = data
 		log.Printf("Set %q to %v", key, data)
+		saveToFile(store)
 		w.WriteHeader(http.StatusOK)
 	}
+}
+
+func saveToFile(store map[string]any) error {
+	data, err := json.Marshal(store)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filename, data, 0644)
 }
