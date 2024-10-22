@@ -12,7 +12,10 @@ var filename = "data.json"
 
 func main() {
 	store := make(map[string]any)
-	loadFromFile(&store)
+	err := loadFromFile(&store)
+	if err != nil {
+		log.Fatal()
+	}
 
 	mux := http.NewServeMux()
 
@@ -65,7 +68,12 @@ func handleUpdate(store map[string]any) http.HandlerFunc {
 		}
 		store[key] = data
 		log.Printf("Set %q to %v", key, data)
-		saveToFile(store)
+
+		err = saveToFile(store)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+
 		w.WriteHeader(http.StatusOK)
 	}
 }
