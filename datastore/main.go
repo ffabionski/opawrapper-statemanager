@@ -10,11 +10,16 @@ import (
 
 var filename = "data.json"
 
+const PORT = "8081"
+
 func main() {
+	log.Println("[INFO] Starting datastore at port", PORT)
+
 	store := make(map[string]any)
-	err := loadFromFile(&store)
-	if err != nil {
-		log.Fatal()
+	loadFromFile(&store)
+
+	if len(store) != 0 {
+		log.Println("[INFO] Load content from", filename, "filename")
 	}
 
 	mux := http.NewServeMux()
@@ -25,19 +30,12 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8081", mux))
 }
 
-func loadFromFile(store *map[string]any) error {
-	file, err := os.Open(filename)
-	if err != nil {
-		return err
+func loadFromFile(store *map[string]any) {
+	data, err := os.ReadFile(filename)
+	// if ReadFile is successufl, the error is nil
+	if err == nil {
+		json.Unmarshal(data, &store)
 	}
-	defer file.Close()
-
-	data, err := io.ReadAll(file)
-	if err != nil {
-		return err
-	}
-
-	return json.Unmarshal(data, &store)
 }
 
 func handleData(store map[string]any) http.HandlerFunc {
