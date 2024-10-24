@@ -1,6 +1,6 @@
 package examplerego
 
-# b comunica con c, fintanto che a non ha comunicato con b
+# B comunica con C, fino a quando A comunica con B
 
 import rego.v1
 
